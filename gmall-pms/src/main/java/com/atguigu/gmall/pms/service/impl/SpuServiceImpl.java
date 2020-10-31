@@ -4,9 +4,7 @@ import com.atguigu.gmall.pms.entity.*;
 import com.atguigu.gmall.pms.feign.GmallSmsClient;
 import com.atguigu.gmall.pms.mapper.SkuMapper;
 import com.atguigu.gmall.pms.mapper.SpuDescMapper;
-import com.atguigu.gmall.pms.service.SkuAttrValueService;
-import com.atguigu.gmall.pms.service.SkuImagesService;
-import com.atguigu.gmall.pms.service.SpuAttrValueService;
+import com.atguigu.gmall.pms.service.*;
 import com.atguigu.gmall.pms.vo.SkuVo;
 import com.atguigu.gmall.pms.vo.SpuAttrValueVo;
 import com.atguigu.gmall.pms.vo.SpuVo;
@@ -16,6 +14,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,15 +27,19 @@ import com.atguigu.gmall.common.bean.PageResultVo;
 import com.atguigu.gmall.common.bean.PageParamVo;
 
 import com.atguigu.gmall.pms.mapper.SpuMapper;
-import com.atguigu.gmall.pms.service.SpuService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 
 @Service("spuService")
 public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements SpuService {
 
+//    @Autowired
+//    private SpuDescMapper descMapper;
+
     @Autowired
-    private SpuDescMapper descMapper;
+    private SpuDescService descService;
 
     @Autowired
     private SpuAttrValueService attrValueService;
@@ -83,37 +87,36 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements
         return new PageResultVo(page);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void bigSave(SpuVo spu) {
+    public void bigSave(SpuVo spu) throws FileNotFoundException {
         // 1. 保存Spu相关信息
         // 1.1. 保存spu表
-        spu.setCreateTime(new Date());
-        spu.setUpdateTime(spu.getCreateTime());
-        this.save(spu);
-        Long spuId = spu.getId();
+        Long spuId = saveSpu(spu);
 
         // 1.2. 保存spu_desc表
-        List<String> spuImages = spu.getSpuImages();
-        if (!CollectionUtils.isEmpty(spuImages)){
-            SpuDescEntity spuDescEntity = new SpuDescEntity();
-            spuDescEntity.setSpuId(spuId);
-            spuDescEntity.setDecript(StringUtils.join(spuImages, ","));
-            this.descMapper.insert(spuDescEntity);
-        }
+        //this.saveSpuDesc(spu, spuId); // 会
+        this.descService.saveSpuDesc(spu, spuId); // 不会
+
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+//        int i = 1/0;
+//        new FileInputStream("xxxxx");
 
         // 1.3. 保存Spu_attr_value表
-        List<SpuAttrValueVo> baseAttrs = spu.getBaseAttrs();
-        if (!CollectionUtils.isEmpty(baseAttrs)){
-            List<SpuAttrValueEntity> spuAttrValueEntities = baseAttrs.stream().map(spuAttrValueVo -> {
-                SpuAttrValueEntity spuAttrValueEntity = new SpuAttrValueEntity();
-                BeanUtils.copyProperties(spuAttrValueVo, spuAttrValueEntity);
-                spuAttrValueEntity.setSpuId(spuId);
-                return spuAttrValueEntity;
-            }).collect(Collectors.toList());
-            this.attrValueService.saveBatch(spuAttrValueEntities);
-        }
+        saveBaseAttr(spu, spuId);
 
         // 2. 保存sku相关信息
+        saveSkus(spu, spuId);
+
+        int i = 1/0;
+    }
+
+    private void saveSkus(SpuVo spu, Long spuId) {
         List<SkuVo> skus = spu.getSkus();
         if (CollectionUtils.isEmpty(skus)){
             return;
@@ -155,6 +158,26 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements
             skuSaleVo.setSkuId(skuVo.getId());
             this.smsClient.saveSales(skuSaleVo);
         });
+    }
+
+    private void saveBaseAttr(SpuVo spu, Long spuId) {
+        List<SpuAttrValueVo> baseAttrs = spu.getBaseAttrs();
+        if (!CollectionUtils.isEmpty(baseAttrs)){
+            List<SpuAttrValueEntity> spuAttrValueEntities = baseAttrs.stream().map(spuAttrValueVo -> {
+                SpuAttrValueEntity spuAttrValueEntity = new SpuAttrValueEntity();
+                BeanUtils.copyProperties(spuAttrValueVo, spuAttrValueEntity);
+                spuAttrValueEntity.setSpuId(spuId);
+                return spuAttrValueEntity;
+            }).collect(Collectors.toList());
+            this.attrValueService.saveBatch(spuAttrValueEntities);
+        }
+    }
+
+    private Long saveSpu(SpuVo spu) {
+        spu.setCreateTime(new Date());
+        spu.setUpdateTime(spu.getCreateTime());
+        this.save(spu);
+        return spu.getId();
     }
 
 //    public static void main(String[] args) {
