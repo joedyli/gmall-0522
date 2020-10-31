@@ -2,6 +2,7 @@ package com.atguigu.gmall.pms.controller;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import com.atguigu.gmall.common.bean.PageParamVo;
 
 /**
  * sku信息
- *
  * @author fengge
  * @email fengge@atguigu.com
  * @date 2020-10-28 09:35:59
@@ -33,6 +33,12 @@ public class SkuController {
 
     @Autowired
     private SkuService skuService;
+
+    @GetMapping("spu/{spuId}")
+    public ResponseVo<List<SkuEntity>> querySkusBySpuId(@PathVariable("spuId")Long spuId){
+        List<SkuEntity> skuEntities = this.skuService.list(new QueryWrapper<SkuEntity>().eq("spu_id", spuId));
+        return ResponseVo.ok(skuEntities);
+    }
 
     /**
      * 列表

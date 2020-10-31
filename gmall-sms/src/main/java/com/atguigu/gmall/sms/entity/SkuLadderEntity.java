@@ -10,7 +10,7 @@ import lombok.Data;
 
 /**
  * 商品阶梯价格
- * 
+ *
  * @author fengge
  * @email fengge@atguigu.com
  * @date 2020-10-28 10:02:46
