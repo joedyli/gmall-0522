@@ -44,6 +44,19 @@ public class SpuController {
 
     /**
      * 列表
+     * 返回值是当前页的spuEntity集合
+     * 专门为es数据导入提供的
+     */
+    @PostMapping("json")
+    @ApiOperation("分页查询")
+    public ResponseVo<List<SpuEntity>> querySpuByPageJson(@RequestBody PageParamVo paramVo){
+        PageResultVo pageResultVo = spuService.queryPage(paramVo);
+
+        return ResponseVo.ok((List<SpuEntity>)pageResultVo.getList());
+    }
+
+    /**
+     * 列表
      */
     @GetMapping
     @ApiOperation("分页查询")
