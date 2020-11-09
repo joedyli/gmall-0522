@@ -17,3 +17,10 @@ spring:
     alibaba:
       seata:
         tx-service-group: gmall-tx-group
+  rabbitmq:
+    host: 172.16.116.100
+    virtual-host: /fengge
+    username: fengge
+    password: fengge
+    publisher-confirm-type: correlated
+    publisher-returns: true

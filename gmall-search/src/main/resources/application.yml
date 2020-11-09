@@ -22,6 +22,18 @@ spring:
       uris: http://172.16.116.100:9200
   jackson:
     default-property-inclusion: non_null
+  thymeleaf:
+    cache: false
+  rabbitmq:
+    host: 172.16.116.100
+    virtual-host: /fengge
+    username: fengge
+    password: fengge
+    listener:
+      simple:
+        prefetch: 1
+        concurrency: 4
+        acknowledge-mode: manual
 feign:
   sentinel:
     enabled: true
