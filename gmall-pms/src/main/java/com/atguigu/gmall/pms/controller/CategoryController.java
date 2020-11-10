@@ -40,6 +40,12 @@ public class CategoryController {
         return ResponseVo.ok(categoryEntities);
     }
 
+    @GetMapping("parent/sub/{parentId}")
+    public ResponseVo<List<CategoryEntity>> queryLvl2CatesWithSubsByPid(@PathVariable("parentId")Long pid){
+        List<CategoryEntity> categoryEntities = this.categoryService.queryLvl2CatesWithSubsByPid(pid);
+        return ResponseVo.ok(categoryEntities);
+    }
+
     /**
      * 列表
      */
