@@ -34,6 +34,12 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @GetMapping("all/{cid}")
+    public ResponseVo<List<CategoryEntity>> queryAllLvlCategoriesByCid3(@PathVariable("cid")Long cid){
+        List<CategoryEntity> categoryEntities = this.categoryService.queryAllLvlCategoriesByCid3(cid);
+        return ResponseVo.ok(categoryEntities);
+    }
+
     @GetMapping("parent/{parentId}")
     public ResponseVo<List<CategoryEntity>> queryCategoriesByPid(@PathVariable("parentId")Long pid){
         List<CategoryEntity> categoryEntities = this.categoryService.queryCategoriesByPid(pid);

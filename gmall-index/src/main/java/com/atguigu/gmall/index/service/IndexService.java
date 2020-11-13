@@ -49,7 +49,7 @@ public class IndexService {
         return listResponseVo.getData();
     }
 
-    @GmallCache(prefix = KEY_PREFIX, timeout = 129600l, random = 14400l, lock = "lock:cates:")
+    @GmallCache(prefix = KEY_PREFIX, timeout = 129600l, random = 14400, lock = "lock:cates:")
     public List<CategoryEntity> queryLvl2CategoriesWithSubsByPid(Long pid) {
         ResponseVo<List<CategoryEntity>> listResponseVo = this.pmsClient.queryLvl2CatesWithSubsByPid(pid);
         List<CategoryEntity> categoryEntities = listResponseVo.getData();

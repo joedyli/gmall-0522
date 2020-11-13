@@ -27,7 +27,7 @@ public @interface GmallCache {
      * 这里可以指定随机值范围
      * @return
      */
-    long random() default 5l;
+    int random() default 5;
 
     /**
      * 为了防止缓存击穿，给缓存添加分布式锁
