@@ -1,4 +1,4 @@
-package com.atguigu.gmall.item.vo;
+package com.atguigu.gmall.pms.vo;
 
 import lombok.Data;
 
@@ -9,5 +9,5 @@ public class GroupVo {
     private Long groupId;
     private String groupName;
 
-    private List<?> attrs;
+    private List<AttrValueVo> attrs;
 }

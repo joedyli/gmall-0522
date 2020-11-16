@@ -2,6 +2,7 @@ package com.atguigu.gmall.pms.controller;
 
 import java.util.List;
 
+import com.atguigu.gmall.pms.vo.SaleAttrValueVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +35,18 @@ public class SkuAttrValueController {
 
     @Autowired
     private SkuAttrValueService skuAttrValueService;
+
+    @GetMapping("sku/mapping/{spuId}")
+    public ResponseVo<String> querySaleAttrValuesMappingSkuId(@PathVariable("spuId")Long spuId){
+        String json = this.skuAttrValueService.querySaleAttrValuesMappingSkuId(spuId);
+        return ResponseVo.ok(json);
+    }
+
+    @GetMapping("spu/{spuId}")
+    public ResponseVo<List<SaleAttrValueVo>> querySaleAttrValuesBySpuId(@PathVariable("spuId")Long spuId){
+        List<SaleAttrValueVo> attrValueVos = this.skuAttrValueService.querySaleAttrValuesBySpuId(spuId);
+        return ResponseVo.ok(attrValueVos);
+    }
 
     @GetMapping("sale/attr/{skuId}")
     public ResponseVo<List<SkuAttrValueEntity>> querySaleAttrsBySkuId(@PathVariable("skuId")Long skuId){

@@ -2,6 +2,8 @@ package com.atguigu.gmall.item.vo;
 
 import com.atguigu.gmall.pms.entity.CategoryEntity;
 import com.atguigu.gmall.pms.entity.SkuImagesEntity;
+import com.atguigu.gmall.pms.vo.GroupVo;
+import com.atguigu.gmall.pms.vo.SaleAttrValueVo;
 import com.atguigu.gmall.sms.vo.ItemSaleVo;
 import lombok.Data;
 
@@ -43,7 +45,7 @@ public class ItemVo {
 
     // 当前sku的销售属性
     // {4: "暗夜黑", 5: "8G"}
-    private Map<Long, Object> saleAttr;
+    private Map<Long, String> saleAttr;
 
     // 销售属性组合和skuId的映射关系
     // {"暗夜黑,8G,128G": 100, "白天白,8G,256G": 101}
