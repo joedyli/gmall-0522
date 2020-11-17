@@ -43,7 +43,7 @@ public class JwtTest {
 
     @Test
     public void testParseToken() throws Exception {
-        String token = "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6IjExIiwidXNlcm5hbWUiOiJsaXV5YW4iLCJleHAiOjE2MDU1MTI2ODN9.N6ZhhIJZ6qssusLgMy90fQwGQkWl9fhKI4znl-BQw2VuArwtkzt4VPn3MkEbGw4s5mg-bqfHEWCxoHyrBE1CcofqUnrUd4Z6TLGfL1gtzA-z4ESumDHGhtOH2v1_wYULW2-9nlAgIaBn6PwTkmR2Dtrqi8VBLSng41-0iBrBZzhiXIBClRFqR2FvZ4Jg9e93SrZgF4NWDV3TneRAnQQtpkEwDjrq6F_81N4NN4lUeX7S-U9pc1AblfxF5jRzWhntvFS-NuoqznJ8CE5BRgVcGY8AFZZ5qpzjIwAUF-lb6niCEVBaPARavd3aNOw4TQ1urIQMxslUyfJFCPv4AYtiXg";
+        String token = "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6IjExIiwidXNlcm5hbWUiOiJsaXV5YW4iLCJleHAiOjE2MDU1ODA0MDJ9.PAwU6defnfvWLG--ljNM3Uy7u6cN6gWWLdM3HSzXxewhPfDj5NFu0uZAoI8P_lCdxCNBpYG_cYpU-OSYD1jZkpRVJ9h85ZRrRiM6prJJlicfuT0wKDI25YlV3b-ceVHmlTlxNZZbUfMVZEw6kHY7A4hup1hDshciFz9TcExZLifZCYyDDKhEHrVW6Dqu2ckREE6eKpWPo-t-yN5AKBxtikSElaK0wrAxeFdPjTkvsEXYBdcB2yIdhj_nncQiLQM0WTnDlVxZ9s7GXEEUHPuicncg0cSLCEFsjGkL_uRYHCiK-_bqpA5-xUPYjBLVudexyyhRhCSuydJiuRsKIU443Q";
 
         // 解析token
         Map<String, Object> map = JwtUtils.getInfoFromToken(token, publicKey);

@@ -47,6 +47,9 @@ public class AuthService {
 
             // 4.把jwt放入cookie
             CookieUtils.setCookie(request, response, this.jwtProperties.getCookieName(), token, this.jwtProperties.getExpire() * 60);
+
+            // 5.为了方便展示用户登录昵称，应该把昵称也放入cookie中
+            CookieUtils.setCookie(request, response, this.jwtProperties.getNickName(), userEntity.getNickname(), this.jwtProperties.getExpire() * 60);
         } catch (Exception e) {
             e.printStackTrace();
         }

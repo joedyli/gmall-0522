@@ -18,7 +18,7 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @GetMapping("toLogin")
+    @GetMapping("toLogin.html")
     public String toLogin(@RequestParam(value = "returnUrl", defaultValue = "http://gmall.com")String returnUrl, Model model){
         model.addAttribute("returnUrl", returnUrl);
         return "login";

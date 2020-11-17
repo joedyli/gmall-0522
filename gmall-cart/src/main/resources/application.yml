@@ -1,5 +1,5 @@
 server:
-  port: 18089
+  port: 18090
 spring:
   cloud:
     nacos:
@@ -19,13 +19,22 @@ spring:
       probability: 1
   thymeleaf:
     cache: false
+  redis:
+    host: 172.16.116.100
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://172.16.116.100:3306/guli_cart
+    username: root
+    password: root
 feign:
   sentinel:
     enabled: true
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
 jwt:
   pubKeyPath: D:\project-0522\rsa\rsa.pub
-  priKeyPath: D:\project-0522\rsa\rsa.pri
-  secret: 23408sdlrjewoL$U#OD0348)4k
-  expire: 180
   cookieName: GMALL-TOKEN
-  nickName: unick
+  userKey: user-key
+  expire: 15552000
