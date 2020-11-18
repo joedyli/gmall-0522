@@ -26,6 +26,28 @@ spring:
     url: jdbc:mysql://172.16.116.100:3306/guli_cart
     username: root
     password: root
+  task:
+    execution:
+      thread-name-prefix: cart-task-
+      pool:
+        core-size: 100
+        max-size: 500
+        keep-alive: 60s
+        queue-capacity: 5000
+        allow-core-thread-timeout: true
+      shutdown:
+        await-termination: true
+        await-termination-period: 60s
+  rabbitmq:
+    virtual-host: /fengge
+    host: 172.16.116.100
+    username: fengge
+    password: fengge
+    listener:
+      simple:
+        prefetch: 1
+        acknowledge-mode: manual
+        concurrency: 3
 feign:
   sentinel:
     enabled: true
