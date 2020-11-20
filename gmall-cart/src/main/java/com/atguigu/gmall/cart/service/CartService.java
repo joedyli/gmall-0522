@@ -104,7 +104,7 @@ public class CartService {
 
             cart.setCheck(true);
 
-            this.asyncService.insertCart(cart);
+            this.asyncService.insertCart(userId, cart);
 
             // 添加价格缓存
             this.redisTemplate.opsForValue().set(PRICE_PREFIX + skuId, skuEntity.getPrice().toString());
@@ -201,7 +201,7 @@ public class CartService {
                 } else {
                     // 登录状态的购物车中不包含该记录，新增一条记录
                     cart.setUserId(userId.toString());
-                    this.asyncService.insertCart(cart);
+                    this.asyncService.insertCart(userId.toString(), cart);
                 }
                 // 更新到redis
                 loginHashOps.put(skuId, JSON.toJSONString(cart));
