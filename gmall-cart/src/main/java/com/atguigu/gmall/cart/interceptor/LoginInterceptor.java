@@ -1,7 +1,7 @@
 package com.atguigu.gmall.cart.interceptor;
 
 import com.atguigu.gmall.cart.config.JwtProperties;
-import com.atguigu.gmall.cart.pojo.UserInfo;
+import com.atguigu.gmall.common.bean.UserInfo;
 import com.atguigu.gmall.common.utils.CookieUtils;
 import com.atguigu.gmall.common.utils.JwtUtils;
 import org.apache.commons.lang3.StringUtils;
