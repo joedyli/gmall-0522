@@ -31,5 +31,6 @@ public class PayAsyncVo {
     private String buyer_pay_amount;//最终支付的金额
     private String sign_type;//签名类型
     private String seller_id;//商家的id
+    private String passback_params; // 公用回传参数
 
 }

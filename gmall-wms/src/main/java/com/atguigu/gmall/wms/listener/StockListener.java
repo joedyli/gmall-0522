@@ -67,4 +67,41 @@ public class StockListener {
             e.printStackTrace();
         }
     }
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "WMS_MINUS_QUEUE", durable = "true"),
+            exchange = @Exchange(value = "ORDER_EXCHANGE", ignoreDeclarationExceptions = "true", type = ExchangeTypes.TOPIC),
+            key = {"stock.minus"}
+    ))
+    public void minus(String orderToken, Channel channel, Message message){
+        try {
+            if (StringUtils.isBlank(orderToken)){
+                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+                return;
+            }
+
+            String json = this.redisTemplate.opsForValue().get(KEY_PREFIX + orderToken);
+            if (StringUtils.isBlank(json)){
+                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+                return;
+            }
+
+            List<SkuLockVo> skuLockVos = JSON.parseArray(json, SkuLockVo.class);
+            if (CollectionUtils.isEmpty(skuLockVos)){
+                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+                return;
+            }
+
+            skuLockVos.forEach(skuLockVo -> {
+                this.wareSkuMapper.minus(skuLockVo.getWareSkuId(), skuLockVo.getCount());
+            });
+
+            this.redisTemplate.expire(KEY_PREFIX + orderToken, 1, TimeUnit.SECONDS);
+            this.redisTemplate.delete(KEY_PREFIX + orderToken);
+
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
